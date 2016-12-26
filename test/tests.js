@@ -3,7 +3,7 @@ const MicroserviceClient = require('zenci-microservice-client');
 
 require('dotenv').config();
 
-describe('Repo CRUD API',function(){
+describe('AUTH CRUD API',function(){
   var client = new MicroserviceClient({
     URL: "http://localhost:" + process.env.PORT,
     secureKey: process.env.SECURE_KEY
@@ -14,20 +14,14 @@ describe('Repo CRUD API',function(){
 
   it('POST should return 200',function(done){
     client.post({
-        accessToken: githubToken,
+        accessToken: accessToken,
         scope:[
           {
             service: 'auth',
-            values: [
-            {
-              variable: 'username',
-              value: 'test'
-            },
-            {
-              variable: 'second',
-              value: 'test2'
+            values: {
+              username: 'test',
+              second: 'test2'
             }
-            ]
           }
         ]
       }, function(err, handlerResponse){
@@ -39,7 +33,15 @@ describe('Repo CRUD API',function(){
   });
 
   it('SEARCH should return 200',function(done){
-    client.search({ "owner": "Zen-CI", "repository": "issues" }, function(err, handlerResponse){
+    client.search({ "accessToken": accessToken}, function(err, handlerResponse){
+      expect(err).to.equal(null);
+      expect(handlerResponse).to.not.equal(null);
+      done();
+    });
+  });
+
+  it('SEARCH SCOPE should return 200',function(done){
+    client.search({ "accessToken": accessToken, 'scope': 'auth' }, function(err, handlerResponse){
       expect(err).to.equal(null);
       expect(handlerResponse).to.not.equal(null);
       done();

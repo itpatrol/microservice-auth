@@ -26,7 +26,7 @@ var mcluster = new Cluster({
     GET: mservice.get,
     PUT: mservice.put,
     DELETE: mservice.delete,
-    SEARCH: mservice.search
+    SEARCH: authRequestSEARCH
   }
 });
 
@@ -43,4 +43,35 @@ if (mcluster.isMaster) {
     },
     cluster: mcluster
   });
+}
+
+function authRequestSEARCH(jsonData, requestDetails, callback) {
+  if(!jsonData.scope) {
+    mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
+      callback(err, handlerResponse);
+    });
+  } else {
+    var scope = jsonData.scope;
+    delete(jsonData.scope);
+    mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
+      if (!err && handlerResponse.code == 200) {
+        var answer = []
+        for (var i in handlerResponse.answer) {
+          console.log(JSON.stringify(handlerResponse.answer[i] , null, 2));
+          if(handlerResponse.answer[i].scope) {
+            for (var j in handlerResponse.answer[i].scope) {
+              if(handlerResponse.answer[i].scope[j].service == scope) {
+                answer = handlerResponse.answer[i].scope[j].values;
+                break;
+              }
+            }
+          }
+        }
+        handlerResponse.answer = answer;
+        callback(err, handlerResponse);
+      } else {
+        callback(err, handlerResponse);
+      }
+    });
+  }
 }
