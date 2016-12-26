@@ -7,7 +7,7 @@
     "test": "mocha --timeout 15000",
     "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=48 zenci-microservice-auth.js >> `cat .env|grep LOGFILE|awk -F= {'print$2'}` 2>&1 &",
     "stop": "cat `cat .env|grep PIDFILE|awk -F= {'print$2'}` |xargs kill -2  2>&1 &",
-    "jscs": "jscs --fix zenci-microservice-auth.js test/*.js includes/*.js",
+    "jscs": "jscs --fix zenci-microservice-auth.js test/*.js",
     "devel-start": "DEBUG=* node  --max-old-space-size=48 zenci-microservice-auth.js"
   },
   "repository": {
