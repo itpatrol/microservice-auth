@@ -55,13 +55,13 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
     delete(jsonData.scope);
     mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
       if (!err && handlerResponse.code == 200) {
-        var answer = []
+        var answer = {}
         for (var i in handlerResponse.answer) {
           console.log(JSON.stringify(handlerResponse.answer[i] , null, 2));
           if (handlerResponse.answer[i].scope) {
             for (var j in handlerResponse.answer[i].scope) {
               if (handlerResponse.answer[i].scope[j].service == scope) {
-                answer = handlerResponse.answer[i].scope[j].values;
+                answer.values = handlerResponse.answer[i].scope[j].values;
                 break;
               }
             }
