@@ -46,7 +46,7 @@ if (mcluster.isMaster) {
 }
 
 function authRequestSEARCH(jsonData, requestDetails, callback) {
-  if(!jsonData.scope) {
+  if (!jsonData.scope) {
     mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
       callback(err, handlerResponse);
     });
@@ -58,9 +58,9 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
         var answer = []
         for (var i in handlerResponse.answer) {
           console.log(JSON.stringify(handlerResponse.answer[i] , null, 2));
-          if(handlerResponse.answer[i].scope) {
+          if (handlerResponse.answer[i].scope) {
             for (var j in handlerResponse.answer[i].scope) {
-              if(handlerResponse.answer[i].scope[j].service == scope) {
+              if (handlerResponse.answer[i].scope[j].service == scope) {
                 answer = handlerResponse.answer[i].scope[j].values;
                 break;
               }
