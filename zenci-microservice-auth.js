@@ -38,8 +38,9 @@ if (mcluster.isMaster) {
       period: process.env.ROUTER_PERIOD,
     },
     route: {
-      path: process.env.SELF_PATH,
-      url: process.env.SELF_URL
+      path: [process.env.SELF_PATH],
+      url: process.env.SELF_URL,
+      secureKey: process.env.SECURE_KEY
     },
     cluster: mcluster
   });
