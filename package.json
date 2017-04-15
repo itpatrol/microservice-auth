@@ -1,7 +1,7 @@
 {
-  "name": "microservice-auth",
+  "name": "@microservice-framework/microservice-auth",
   "version": "1.0.0",
-  "description": "Auth Service to provide Access Token authorization",
+  "description": "Auth Service for Microservice framework",
   "main": "microservice-auth.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --timeout 15000",
@@ -12,24 +12,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itpatrol/microservice-auth.git"
+    "url": "git+https://github.com/microservice-framework/microservice-auth.git"
   },
   "author": "Gormartsen",
-  "license": "SEE LICENSE IN <LICENSE.txt>",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/itpatrol/microservice-auth/issues"
+    "url": "https://github.com/microservice-framework/microservice-auth/issues"
   },
   "dependencies": {
+    "@microservice-framework/microservice": "^1.0.3",
+    "@microservice-framework/microservice-cluster": "^1.0.1",
+    "@microservice-framework/microservice-router-register": "^1.0.0",
     "debug": "^2.6.3",
-    "dotenv": "^2.0.0",
-    "zenci-manager": "github:itpatrol/zenci-manager",
-    "zenci-microservice": "github:itpatrol/zenci-microservice",
-    "zenci-microservice-router-register": "github:itpatrol/zenci-microservice-router-register"
+    "dotenv": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
-    "zenci-microservice-client": "github:itpatrol/zenci-microservice-client"
+    "@microservice-framework/microservice-client": "^1.0.1"
   },
-  "homepage": "https://github.com/itpatrol/microservice-auth#readme"
+  "homepage": "https://github.com/microservice-framework/microservice-auth#readme"
 }

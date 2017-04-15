@@ -3,9 +3,9 @@
  */
 'use strict';
 
-const Cluster = require('zenci-manager');
-const Microservice = require('zenci-microservice');
-const MicroserviceRouterRegister = require('zenci-microservice-router-register');
+const Cluster = require('@microservice-framework/microservice-cluster');
+const Microservice = require('@microservice-framework/microservice');
+const MicroserviceRouterRegister = require('@microservice-framework/microservice-router-register');
 const debugF = require('debug');
 
 var debug = {
