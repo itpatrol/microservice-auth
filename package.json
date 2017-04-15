@@ -1,25 +1,26 @@
 {
-  "name": "zenci-microservice-auth",
+  "name": "microservice-auth",
   "version": "1.0.0",
   "description": "Auth Service to provide Access Token authorization",
-  "main": "zenci-microservice-auth.js",
+  "main": "microservice-auth.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --timeout 15000",
-    "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=48 zenci-microservice-auth.js >> `cat .env|grep LOGFILE|awk -F= {'print$2'}` 2>&1 &",
+    "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=48 microservice-auth.js >> `cat .env|grep LOGFILE|awk -F= {'print$2'}` 2>&1 &",
     "stop": "cat `cat .env|grep PIDFILE|awk -F= {'print$2'}` |xargs kill -2  2>&1 &",
-    "jscs": "jscs --fix zenci-microservice-auth.js test/*.js",
-    "devel-start": "DEBUG=* node  --max-old-space-size=48 zenci-microservice-auth.js"
+    "jscs": "jscs --fix microservice-auth.js test/*.js",
+    "devel-start": "DEBUG=* node  --max-old-space-size=48 microservice-auth.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itpatrol/zenci-microservice-auth.git"
+    "url": "git+https://github.com/itpatrol/microservice-auth.git"
   },
   "author": "Gormartsen",
   "license": "SEE LICENSE IN <LICENSE.txt>",
   "bugs": {
-    "url": "https://github.com/itpatrol/zenci-microservice-auth/issues"
+    "url": "https://github.com/itpatrol/microservice-auth/issues"
   },
   "dependencies": {
+    "debug": "^2.6.3",
     "dotenv": "^2.0.0",
     "zenci-manager": "github:itpatrol/zenci-manager",
     "zenci-microservice": "github:itpatrol/zenci-microservice",
@@ -30,5 +31,5 @@
     "mocha": "^3.0.2",
     "zenci-microservice-client": "github:itpatrol/zenci-microservice-client"
   },
-  "homepage": "https://github.com/itpatrol/zenci-microservice-auth#readme"
+  "homepage": "https://github.com/itpatrol/microservice-auth#readme"
 }

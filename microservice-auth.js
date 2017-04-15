@@ -6,6 +6,13 @@
 const Cluster = require('zenci-manager');
 const Microservice = require('zenci-microservice');
 const MicroserviceRouterRegister = require('zenci-microservice-router-register');
+const debugF = require('debug');
+
+var debug = {
+  log: debugF('proxy:log'),
+  debug: debugF('proxy:debug')
+};
+
 
 require('dotenv').config();
 
@@ -58,7 +65,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
       if (!err && handlerResponse.code == 200) {
         var answer = {}
         for (var i in handlerResponse.answer) {
-          console.log(JSON.stringify(handlerResponse.answer[i] , null, 2));
+          debug.debug("Search Result: %O", handlerResponse.answer[i]);
           if (handlerResponse.answer[i].scope) {
             for (var j in handlerResponse.answer[i].scope) {
               if (handlerResponse.answer[i].scope[j].service == scope) {
