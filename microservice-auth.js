@@ -13,7 +13,6 @@ var debug = {
   debug: debugF('proxy:debug')
 };
 
-
 require('dotenv').config();
 
 var mservice = new Microservice({
@@ -23,11 +22,13 @@ var mservice = new Microservice({
   schema: process.env.SCHEMA
 });
 
-var mcluster = new Cluster({
+var mControlCluster = new Cluster({
   pid: process.env.PIDFILE,
   port: process.env.PORT,
+  hostname: process.env.HOSTNAME,
   count: process.env.WORKERS,
   callbacks: {
+    init: microserviceAuthINIT,
     validate: mservice.validate,
     POST: mservice.post,
     GET: mservice.get,
@@ -37,20 +38,25 @@ var mcluster = new Cluster({
   }
 });
 
-if (mcluster.isMaster) {
-  var mserviceRegister = new MicroserviceRouterRegister({
-    server: {
-      url: process.env.ROUTER_URL,
-      secureKey: process.env.ROUTER_SECRET,
-      period: process.env.ROUTER_PERIOD,
-    },
-    route: {
-      path: [process.env.SELF_PATH],
-      url: process.env.SELF_URL,
-      secureKey: process.env.SECURE_KEY
-    },
-    cluster: mcluster
-  });
+/**
+ * Init Handler.
+ */
+function microserviceAuthINIT(cluster, worker, address) {
+  if (worker.id == 1) {
+    var mserviceRegister = new MicroserviceRouterRegister({
+      server: {
+        url: process.env.ROUTER_URL,
+        secureKey: process.env.ROUTER_SECRET,
+        period: process.env.ROUTER_PERIOD,
+      },
+      route: {
+        path: [process.env.SELF_PATH],
+        url: process.env.SELF_URL,
+        secureKey: process.env.SECURE_KEY
+      },
+      cluster: cluster
+    });
+  }
 }
 
 function authRequestSEARCH(jsonData, requestDetails, callback) {
