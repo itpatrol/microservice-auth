@@ -1,11 +1,11 @@
-# zenci-microservice-auth
+# microservice-auth
 API service to manage auth scopes
-Available via http://api.zen.ci/auth
+
 ```js
   // Hook new repo.
   var client = new MicroserviceClient({
-    URL: "ttp://api.zen.ci/auth",
-    secureKey: process.env.SECURE_KEY
+    URL: "https://myapiserver.com/api/v1/auth",
+    secureKey: process.env.AUTH_SECURE_KEY
   });  
   client.search({ "accessToken": accessToken, 'scope': 'auth' }, function(err, handlerResponse){
     console.log(handlerResponse.answer);
