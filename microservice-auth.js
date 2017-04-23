@@ -74,7 +74,7 @@ function authRequestPOST(jsonData, requestDetails, callback) {
     accessToken: jsonData.accessToken
   }
   mservice.search(searchToken, requestDetails, function(err, handlerResponse) {
-    if( handlerResponse.code != 404){
+    if (handlerResponse.code != 404) {
       jsonData.accessToken = tokenGenerate(24);
       return authRequestPOST(jsonData, requestDetails, callback);
     }
@@ -104,7 +104,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
       if (!err && handlerResponse.code == 200) {
         var answer = {}
         for (var i in handlerResponse.answer) {
-          debug.debug("Search Result: %O", handlerResponse.answer[i]);
+          debug.debug('Search Result: %O', handlerResponse.answer[i]);
           if (handlerResponse.answer[i].scope) {
             for (var j in handlerResponse.answer[i].scope) {
               if (handlerResponse.answer[i].scope[j].service == scope) {
