@@ -5,7 +5,8 @@
 
 const Cluster = require('@microservice-framework/microservice-cluster');
 const Microservice = require('@microservice-framework/microservice');
-const MicroserviceRouterRegister = require('@microservice-framework/microservice-router-register');
+const MicroserviceRouterRegister = require('@microservice-framework/microservice-router-register').register;
+const tokenGenerate = require('./includes/token-generate.js');
 const debugF = require('debug');
 
 var debug = {
@@ -30,7 +31,7 @@ var mControlCluster = new Cluster({
   callbacks: {
     init: microserviceAuthINIT,
     validate: mservice.validate,
-    POST: mservice.post,
+    POST: authRequestPOST,
     GET: mservice.get,
     PUT: mservice.put,
     DELETE: mservice.delete,
@@ -59,6 +60,38 @@ function microserviceAuthINIT(cluster, worker, address) {
   }
 }
 
+/**
+ * POST handler.
+ */
+function authRequestPOST(jsonData, requestDetails, callback) {
+  if (!jsonData.accessToken) {
+    jsonData.accessToken = tokenGenerate(24);
+  }
+  if (!jsonData.ttl) {
+    jsonData.ttl = 3600;
+  }
+  var searchToken = {
+    accessToken: jsonData.accessToken
+  }
+  mservice.search(searchToken, requestDetails, function(err, handlerResponse) {
+    if( handlerResponse.code != 404){
+      jsonData.accessToken = tokenGenerate(24);
+      return authRequestPOST(jsonData, requestDetails, callback);
+    }
+    jsonData.expireAt = Date.now() + jsonData.ttl * 1000;
+    mservice.post(jsonData, requestDetails, function(err, handlerResponse) {
+      callback(null, {
+        code: 200,
+        answer: {
+          accessToken: jsonData.accessToken,
+          expiresAt: jsonData.expireAt,
+          ttl: jsonData.ttl
+        }
+      });
+    });
+  });
+}
+
 function authRequestSEARCH(jsonData, requestDetails, callback) {
   if (!jsonData.scope) {
     mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
@@ -76,6 +109,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
             for (var j in handlerResponse.answer[i].scope) {
               if (handlerResponse.answer[i].scope[j].service == scope) {
                 answer.values = handlerResponse.answer[i].scope[j].values;
+                answer.methods = handlerResponse.answer[i].scope[j].methods;
                 break;
               }
             }

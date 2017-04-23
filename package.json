@@ -1,14 +1,14 @@
 {
   "name": "@microservice-framework/microservice-auth",
-  "version": "1.0.0",
-  "description": "Auth Service for Microservice framework",
+  "version": "1.1.0",
+  "description": "Microservice framework auth service.",
   "main": "microservice-auth.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --timeout 15000",
-    "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=48 microservice-auth.js >> `cat .env|grep LOGFILE|awk -F= {'print$2'}` 2>&1 &",
-    "stop": "cat `cat .env|grep PIDFILE|awk -F= {'print$2'}` |xargs kill -2  2>&1 &",
-    "jscs": "jscs --fix microservice-auth.js test/*.js",
-    "devel-start": "DEBUG=* node  --max-old-space-size=48 microservice-auth.js"
+    "start": "DEBUG=http:log,cluster:* node  --max-old-space-size=48 microservice-auth.js",
+    "stop": "node kill.js",
+    "status": "node status.js",
+    "jscs": "jscs --fix microservice-auth.js test/*.js"
   },
   "repository": {
     "type": "git",
