@@ -4,9 +4,11 @@ require('dotenv').config();
 
 var pid = false;
 if (process.env.PIDFILE) {
-  pid = fs.readFileSync(process.env.PIDFILE).toString('utf8');
+  try{
+    pid = fs.readFileSync(process.env.PIDFILE).toString('utf8');
+  }catch(e) {}
 }
 
-console.log(JSON.stringify({
-  "microservice-auth" : pid
-}));
+var result = {}
+result[process.env.npm_package_name] = pid;
+console.log(JSON.stringify(result));

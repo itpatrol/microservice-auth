@@ -14,7 +14,7 @@
     "mongo_prefix": {
       "type": "string",
       "description": "Mongo prefix(db)",
-      "default": "rules"
+      "default": "mfw"
     },
     "mongo_options": {
       "type": "string",
