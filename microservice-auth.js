@@ -79,16 +79,7 @@ function authRequestPOST(jsonData, requestDetails, callback) {
       return authRequestPOST(jsonData, requestDetails, callback);
     }
     jsonData.expireAt = Date.now() + jsonData.ttl * 1000;
-    mservice.post(jsonData, requestDetails, function(err, handlerResponse) {
-      callback(null, {
-        code: 200,
-        answer: {
-          accessToken: jsonData.accessToken,
-          expiresAt: jsonData.expireAt,
-          ttl: jsonData.ttl
-        }
-      });
-    });
+    mservice.post(jsonData, requestDetails, callback);
   });
 }
 
