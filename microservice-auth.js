@@ -102,7 +102,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
     }
     let item = handlerResponse.answer[0];
 
-    if(item.expireAt < Date.now()) {
+    if(item.expireAt != -1 &&item.expireAt < Date.now()) {
       return callback(new Error('Token expired'));
     }
     let answer = {}
