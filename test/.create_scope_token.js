@@ -3,7 +3,7 @@ const MicroserviceClient = require('@microservice-framework/microservice-client'
 require('dotenv').config();
 
 var client = new MicroserviceClient({
-  URL: process.env.SELF_PATH,
+  URL: process.env.SELF_URL,
   secureKey: process.env.SECURE_KEY
 });
 
@@ -14,7 +14,7 @@ client.post({
     ttl: 600,
     credential: {
       username: 'Gormartsen'
-    }
+    },
     scope:[
       {
         service: 'repos',
