@@ -85,9 +85,12 @@ function authRequestPOST(jsonData, requestDetails, callback) {
 
 function authRequestSEARCH(jsonData, requestDetails, callback) {
   let validate = false;
+  let scope = false;
   if(jsonData.validate){
     validate = true;
     delete jsonData.validate;
+    scope = jsonData.scope;
+    delete jsonData.scope;
   }
 
   mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
@@ -97,10 +100,25 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
     if(err) {
       return callback(err, handlerResponse);
     }
-    let answer = handlerResponse.answer[0];
-    if(answer.expireAt < Date.now()) {
+    let item = handlerResponse.answer[0];
+
+    if(item.expireAt < Date.now()) {
       return callback(new Error('Token expired'));
     }
+    let answer = {}
+    answer.accessToken = item.accessToken;
+    answer.ttl = item.ttl;
+    answer.expireAt = item.expireAt;
+    answer.credential = item.credential;
+    answer.methods = {}
+
+    for (var i in item.scope) {
+      if (item.scope[i].service == scope) {
+        answer.methods = item.scope[j].methods;
+        break;
+      }
+    }
+
     handlerResponse.answer = answer;
     return callback(null, handlerResponse);
   });
