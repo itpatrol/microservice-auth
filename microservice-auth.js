@@ -84,8 +84,9 @@ function authRequestPOST(jsonData, requestDetails, callback) {
 }
 
 function authRequestSEARCH(jsonData, requestDetails, callback) {
+  let validate = false;
   if(jsonData.validate){
-    let validate = true;
+    validate = true;
     delete jsonData.validate;
   }
 
