@@ -11,20 +11,29 @@ var accessToken = '4255119b61827d71ba8aebef0c98d21d6d45b53c';
 
 client.post({
     accessToken: accessToken,
-    ttl: 60,
+    ttl: 600,
+    credential: {
+      username: 'Gormartsen'
+    }
     scope:[
       {
-        service: 'stats',
+        service: 'repos',
         methods: {
           get:true,
-          post:true,
-          put: true,
+          post:false,
+          put: false,
           search: true,
-          delete: true,
-        },
-        values: {
-          database: 'stats',
-          table: 'users'
+          delete: false,
+        }
+      },
+      {
+        service: 'payload',
+        methods: {
+          get:true,
+          post:false,
+          put: false,
+          search: true,
+          delete: false,
         }
       }
     ]

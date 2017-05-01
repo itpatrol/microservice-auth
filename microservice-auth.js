@@ -84,33 +84,23 @@ function authRequestPOST(jsonData, requestDetails, callback) {
 }
 
 function authRequestSEARCH(jsonData, requestDetails, callback) {
-  if (!jsonData.scope) {
-    mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
-      callback(err, handlerResponse);
-    });
-  } else {
-    var scope = jsonData.scope;
-    delete(jsonData.scope);
-    mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
-      if (!err && handlerResponse.code == 200) {
-        var answer = {}
-        for (var i in handlerResponse.answer) {
-          debug.debug('Search Result: %O', handlerResponse.answer[i]);
-          if (handlerResponse.answer[i].scope) {
-            for (var j in handlerResponse.answer[i].scope) {
-              if (handlerResponse.answer[i].scope[j].service == scope) {
-                answer.values = handlerResponse.answer[i].scope[j].values;
-                answer.methods = handlerResponse.answer[i].scope[j].methods;
-                break;
-              }
-            }
-          }
-        }
-        handlerResponse.answer = answer;
-        callback(err, handlerResponse);
-      } else {
-        callback(err, handlerResponse);
-      }
-    });
+  if(jsonData.validate){
+    let validate = true;
+    delete jsonData.validate;
   }
+
+  mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
+    if(!validate) {
+      return callback(err, handlerResponse);
+    }
+    if(err) {
+      return callback(err, handlerResponse);
+    }
+    let answer = handlerResponse.answer[0];
+    if(answer.expireAt < Date.now()) {
+      return callback(new Error('Token expired'));
+    }
+    handlerResponse.answer = answer;
+    return callback(null, handlerResponse);
+  });
 }
