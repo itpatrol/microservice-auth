@@ -114,7 +114,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
 
     for (var i in item.scope) {
       if (item.scope[i].service == scope) {
-        answer.methods = item.scope[j].methods;
+        answer.methods = item.scope[i].methods;
         break;
       }
     }
