@@ -104,6 +104,9 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
     if(err) {
       return callback(err, handlerResponse);
     }
+    if(handlerResponse.code == 404) {
+      return callback(err, handlerResponse);
+    }
     let item = handlerResponse.answer[0];
 
     if(item.expireAt != -1 &&item.expireAt < Date.now()) {
