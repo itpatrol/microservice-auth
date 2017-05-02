@@ -8,15 +8,54 @@
 AuthToken microservice for [microservice-framework](https://www.npmjs.com/~microservice-framework)
 
 
+## Create token
+
 ```js
-  // Hook new repo.
-  var client = new MicroserviceClient({
-    URL: "https://myapiserver.com/api/v1/auth",
-    secureKey: process.env.AUTH_SECURE_KEY
-  });  
-  client.search({ "accessToken": accessToken, 'scope': 'auth' }, function(err, handlerResponse){
-    console.log(handlerResponse.answer);
-  });
+const MicroserviceClient = require('@microservice-framework/microservice-client');
+
+require('dotenv').config();
+
+var client = new MicroserviceClient({
+  URL: process.env.SELF_URL,
+  secureKey: process.env.SECURE_KEY
+});
+
+client.post({
+    ttl: 600,
+    credential: {
+      username: 'Gormartsen'
+    },
+    scope:[
+      {
+        service: 'service1',
+        methods: {
+          get:true,
+          post:false,
+          put: false,
+          search: true,
+          delete: false,
+        }
+      },
+      {
+        service: 'service2',
+        methods: {
+          get:true,
+          post:false,
+          put: false,
+          search: true,
+          delete: false,
+        }
+      }
+    ]
+  }, function(err, handlerResponse){
+    console.log(err);
+    console.log(JSON.stringify(handlerResponse , null, 2));
+});
+
 ```
 
-`handlerResponse.answer` should be not empty key value object, where key is required variable and value is required value to match scope.
+ - `ttl` - access token live time. Use -1 to create immortal token.
+ - `credential` - object that will be available by requestDetails.credential in GET/POST/PUT/SEARCH/DELETE methods under microservice.
+ - `scope` - array of objects where:
+   - service: SCOPE value from microservice register function.
+   - methods: true - access allowed, false - denied.

@@ -9,7 +9,7 @@
     "mongo_table": {
       "type": "string",
       "description": "Mongo Table",
-      "default": "auth"
+      "default": "tokens"
     },
     "mongo_prefix": {
       "type": "string",
@@ -52,13 +52,13 @@
     },
     "router_url": {
       "type": "string",
-      "description": "ROUTER URL (no trailing /)",
+      "description": "ROUTER URL ",
       "default": "http://localhost:3000",
       "required": true
     },
     "router_proxy_url": {
       "type": "string",
-      "description": "ROUTER PROXY URL (no trailing /)",
+      "description": "ROUTER PROXY URL ",
       "default": "http://localhost:3100",
       "required": true
     },

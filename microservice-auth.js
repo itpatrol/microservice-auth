@@ -78,7 +78,11 @@ function authRequestPOST(jsonData, requestDetails, callback) {
       jsonData.accessToken = tokenGenerate(24);
       return authRequestPOST(jsonData, requestDetails, callback);
     }
-    jsonData.expireAt = Date.now() + jsonData.ttl * 1000;
+    if(jsonData.ttl == -1) {
+      jsonData.expireAt = -1;
+    } else {
+      jsonData.expireAt = Date.now() + jsonData.ttl * 1000;
+    }
     mservice.post(jsonData, requestDetails, callback);
   });
 }
