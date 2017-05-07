@@ -1,6 +1,6 @@
 {
   "name": "@microservice-framework/microservice-auth",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Microservice framework auth service.",
   "main": "microservice-auth.js",
   "scripts": {
@@ -20,16 +20,16 @@
     "url": "https://github.com/microservice-framework/microservice-auth/issues"
   },
   "dependencies": {
-    "@microservice-framework/microservice": "^1.2.1",
-    "@microservice-framework/microservice-cluster": "^1.2.0",
-    "@microservice-framework/microservice-router-register": "^1.2.3",
+    "@microservice-framework/microservice": "^1.2.2",
+    "@microservice-framework/microservice-cluster": "^1.2.1",
+    "@microservice-framework/microservice-router-register": "^1.2.6",
     "debug": "^2.6.3",
     "dotenv": "^2.0.0"
   },
   "devDependencies": {
+    "@microservice-framework/microservice-client": "^1.2.1",
     "chai": "^3.5.0",
-    "mocha": "^3.0.2",
-    "@microservice-framework/microservice-client": "^1.0.1"
+    "mocha": "^3.0.2"
   },
   "homepage": "https://github.com/microservice-framework/microservice-auth#readme"
 }
