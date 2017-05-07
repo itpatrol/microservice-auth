@@ -3,9 +3,12 @@
  */
 'use strict';
 
-const Cluster = require('@microservice-framework/microservice-cluster');
-const Microservice = require('@microservice-framework/microservice');
-const MicroserviceRouterRegister = require('@microservice-framework/microservice-router-register').register;
+const framework = '@microservice-framework';
+const Cluster = require(framework + '/microservice-cluster');
+const Microservice = require(framework + '/microservice');
+const MicroserviceRouterRegister = require(framework + '/microservice-router-register').register;
+const loaderMfw = require(framework + '/microservice-router-register').loaderMicroservice;
+
 const tokenGenerate = require('./includes/token-generate.js');
 const debugF = require('debug');
 
@@ -20,7 +23,13 @@ var mservice = new Microservice({
   mongoUrl: process.env.MONGO_URL + process.env.MONGO_PREFIX + process.env.MONGO_OPTIONS,
   mongoTable: process.env.MONGO_TABLE,
   secureKey: process.env.SECURE_KEY,
-  schema: process.env.SCHEMA
+  schema: process.env.SCHEMA,
+  id: {
+    title: 'access_token',
+    field: 'accessToken',
+    type: 'string',
+    description: 'Generated access token.'
+  }
 });
 
 var mControlCluster = new Cluster({
@@ -29,13 +38,15 @@ var mControlCluster = new Cluster({
   hostname: process.env.HOSTNAME,
   count: process.env.WORKERS,
   callbacks: {
+    loader: loaderMfw,
     init: microserviceAuthINIT,
     validate: mservice.validate,
     POST: authRequestPOST,
     GET: mservice.get,
     PUT: mservice.put,
     DELETE: mservice.delete,
-    SEARCH: authRequestSEARCH
+    SEARCH: authRequestSEARCH,
+    OPTIONS: mservice.options
   }
 });
 
@@ -53,7 +64,13 @@ function microserviceAuthINIT(cluster, worker, address) {
       route: {
         path: [process.env.SELF_PATH],
         url: process.env.SELF_URL,
-        secureKey: process.env.SECURE_KEY
+        secureKey: process.env.SECURE_KEY,
+        provides: {
+          ':access_token': {
+            field: 'accessToken',
+            type: 'number'
+          }
+        }
       },
       cluster: cluster
     });

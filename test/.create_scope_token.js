@@ -11,7 +11,7 @@ var accessToken = '4255119b61827d71ba8aebef0c98d21d6d45b53c';
 
 client.post({
     accessToken: accessToken,
-    ttl: 600,
+    ttl: 6000,
     credential: {
       username: 'Gormartsen'
     },
@@ -24,6 +24,7 @@ client.post({
           put: false,
           search: true,
           delete: false,
+          options: true,
         }
       },
       {
@@ -34,6 +35,18 @@ client.post({
           put: false,
           search: true,
           delete: false,
+          options: true,
+        }
+      },
+      {
+        service: 'auth',
+        methods: {
+          get:true,
+          post:false,
+          put: false,
+          search: true,
+          delete: false,
+          options: true,
         }
       }
     ]
