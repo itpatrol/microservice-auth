@@ -95,7 +95,7 @@ function authRequestPOST(jsonData, requestDetails, callback) {
       jsonData.accessToken = tokenGenerate(24);
       return authRequestPOST(jsonData, requestDetails, callback);
     }
-    if(jsonData.ttl == -1) {
+    if (jsonData.ttl == -1) {
       jsonData.expireAt = -1;
     } else {
       jsonData.expireAt = Date.now() + jsonData.ttl * 1000;
@@ -107,7 +107,7 @@ function authRequestPOST(jsonData, requestDetails, callback) {
 function authRequestSEARCH(jsonData, requestDetails, callback) {
   let validate = false;
   let scope = false;
-  if(jsonData.validate){
+  if (jsonData.validate) {
     validate = true;
     delete jsonData.validate;
     scope = jsonData.scope;
@@ -115,18 +115,18 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
   }
 
   mservice.search(jsonData, requestDetails, function(err, handlerResponse) {
-    if(!validate) {
+    if (!validate) {
       return callback(err, handlerResponse);
     }
-    if(err) {
+    if (err) {
       return callback(err, handlerResponse);
     }
-    if(handlerResponse.code == 404) {
+    if (handlerResponse.code == 404) {
       return callback(err, handlerResponse);
     }
     let item = handlerResponse.answer[0];
 
-    if(item.expireAt != -1 &&item.expireAt < Date.now()) {
+    if (item.expireAt != -1 && item.expireAt < Date.now()) {
       return callback(new Error('Token expired'));
     }
     let answer = {}
