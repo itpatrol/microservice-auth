@@ -133,7 +133,7 @@ function authRequestSEARCH(jsonData, requestDetails, callback) {
     answer.accessToken = item.accessToken;
     answer.ttl = item.ttl;
     answer.expireAt = item.expireAt;
-    answer.credential = item.credential;
+    answer.credentials = item.credentials;
     answer.methods = {}
 
     for (var i in item.scope) {
