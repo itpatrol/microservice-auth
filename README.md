@@ -22,7 +22,7 @@ var client = new MicroserviceClient({
 
 client.post({
     ttl: 600,
-    credential: {
+    credentials: {
       username: 'Gormartsen'
     },
     scope:[
@@ -55,7 +55,7 @@ client.post({
 ```
 
  - `ttl` - access token live time. Use -1 to create immortal token.
- - `credential` - object that will be available by requestDetails.credential in GET/POST/PUT/SEARCH/DELETE methods under microservice.
+ - `credentials` - object that will be available by requestDetails.credentials in GET/POST/PUT/SEARCH/DELETE methods under microservice.
  - `scope` - array of objects where:
    - service: SCOPE value from microservice register function.
    - methods: true - access allowed, false - denied.
