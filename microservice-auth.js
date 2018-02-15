@@ -79,9 +79,9 @@ function microserviceAuthINIT(cluster, worker, address) {
  */
 function microserviceAuthVALIDATE(method, jsonData, requestDetails, callback) {
   console.log('microserviceAuthVALIDATE:requestDetails', requestDetails);
-  if(!requestDetails.headers.access_token
+  if (!requestDetails.headers.access_token
     && !requestDetails.headers['Access-Token']) {
-      return mservice.validate(method, jsonData, requestDetails, callback);
+    return mservice.validate(method, jsonData, requestDetails, callback);
   }
   requestDetails.url = requestDetails.url.toLowerCase();
   if (method.toLowerCase() == 'get') {
@@ -98,10 +98,10 @@ function microserviceAuthVALIDATE(method, jsonData, requestDetails, callback) {
   }
   let accessToken = '';
 
-  if(requestDetails.headers.access_token) {
+  if (requestDetails.headers.access_token) {
     accessToken = requestDetails.headers.access_token;
   }
-  if(requestDetails.headers['Access-Token']) {
+  if (requestDetails.headers['Access-Token']) {
     accessToken = requestDetails.headers['Access-Token'];
   }
 
@@ -115,7 +115,7 @@ function microserviceAuthVALIDATE(method, jsonData, requestDetails, callback) {
     let item = handlerResponse.answer;
     if (item.expireAt != -1 && item.expireAt < Date.now()) {
       mservice.delete(requestDetails, function(err, answer) {
-        if(err) {
+        if (err) {
           return debug.debug('Failed to delete token %O', item);
         }
         debug.debug('Token deleted %O', item);
