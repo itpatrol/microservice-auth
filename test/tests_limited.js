@@ -16,6 +16,9 @@ describe('AUTH CRUD API',function(){
     client.post({
         accessToken: accessToken,
         ttl: 10,
+        credentials: {
+          username: 'test',
+        },
         scope:[
           {
             service: 'auth',
@@ -25,17 +28,15 @@ describe('AUTH CRUD API',function(){
               put: false,
               search: true,
               delete: false
-            },
-            values: {
             }
           }
         ]
       }, function(err, handlerResponse){
-        accessToken = handlerResponse.accessToken;
         expect(err).to.equal(null);
         expect(handlerResponse.accessToken).to.not.equal(null);
         expect(handlerResponse.expiresAt).to.not.equal(null);
         expect(handlerResponse.ttl).to.not.equal(null);
+        accessToken = handlerResponse.accessToken;
         done();
     });
   });
@@ -47,6 +48,9 @@ describe('AUTH CRUD API',function(){
     });
     client.post({
         ttl: 10,
+        credentials: {
+          username: 'test',
+        },
         scope:[
           {
             service: 'auth',
@@ -56,8 +60,6 @@ describe('AUTH CRUD API',function(){
               put: true,
               search: true,
               delete: true
-            },
-            values: {
             }
           }
         ]
@@ -73,24 +75,11 @@ describe('AUTH CRUD API',function(){
       accessToken: accessToken
     });
     client.search({ "accessToken": accessToken}, function(err, handlerResponse){
-      RecordID = handlerResponse[0].id;
+      RecordID = handlerResponse[0].accessToken;
       expect(err).to.equal(null);
       expect(handlerResponse).to.not.equal(null);
       expect(handlerResponse.token).to.be.undefined;
 
-      done();
-    });
-  });
-
-  it('SEARCH by limited accessToken SCOPE should return 200',function(done){
-    var client = new MicroserviceClient({
-      URL: process.env.SELF_URL,
-      accessToken: accessToken
-    });
-    client.search({ "accessToken": accessToken, 'scope': 'auth' }, function(err, handlerResponse){
-      expect(err).to.equal(null);
-      expect(handlerResponse).to.not.equal(null);
-      expect(handlerResponse.token).to.be.undefined;
       done();
     });
   });
@@ -101,8 +90,38 @@ describe('AUTH CRUD API',function(){
       accessToken: accessToken
     });
     client.get(RecordID, function(err, handlerResponse){
+      console.log(handlerResponse);
       expect(err).to.equal(null);
       expect(handlerResponse.token).to.be.undefined;
+      done();
+    });
+  });
+it('GET with Scope:auth should return 200',function(done){
+    var client = new MicroserviceClient({
+      URL: process.env.SELF_URL,
+      accessToken: accessToken,
+      headers: {
+        scope: 'auth'
+      }
+    });
+    client.get(RecordID, function(err, handlerResponse){
+      expect(err).to.equal(null);
+      expect(handlerResponse.methods.get).to.not.equal(undefined);
+      done();
+    });
+  });
+
+  it('GET with Scope:some should return 200 with empty methods',function(done){
+    var client = new MicroserviceClient({
+      URL: process.env.SELF_URL,
+      accessToken: accessToken,
+      headers: {
+        scope: 'some'
+      }
+    });
+    client.get(RecordID, function(err, handlerResponse){
+      expect(err).to.equal(null);
+      expect(handlerResponse.methods.get).to.equal(undefined);
       done();
     });
   });
@@ -135,7 +154,7 @@ describe('AUTH CRUD API',function(){
       secureKey: process.env.SECURE_KEY
     });
     client.search({ "accessToken": accessToken}, function(err, handlerResponse){
-      RecordID = handlerResponse[0].id;
+      RecordID = handlerResponse[0].accessToken;
       TokenID = handlerResponse[0].token;
       expect(err).to.equal(null);
       expect(handlerResponse).to.not.equal(null);
