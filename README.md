@@ -59,3 +59,7 @@ client.post({
  - `scope` - array of objects where:
    - service: SCOPE value from microservice register function.
    - methods: true - access allowed, false - denied.
+
+### Changle log
+
+- 1.3.5 - fix 'access-token' validation

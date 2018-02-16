@@ -1,6 +1,6 @@
 {
   "name": "@microservice-framework/microservice-auth",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Microservice framework auth service.",
   "main": "microservice-auth.js",
   "scripts": {

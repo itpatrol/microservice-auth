@@ -79,30 +79,22 @@ function microserviceAuthINIT(cluster, worker, address) {
  */
 function microserviceAuthVALIDATE(method, jsonData, requestDetails, callback) {
   console.log('microserviceAuthVALIDATE:requestDetails', requestDetails);
-  if (!requestDetails.headers.access_token
-    && !requestDetails.headers['Access-Token']) {
+  let accessToken = false;
+
+  if(requestDetails.headers.access_token) {
+    accessToken = requestDetails.headers.access_token;
+  }
+  if(requestDetails.headers['access-token']) {
+    accessToken = requestDetails.headers['access-token'];
+  }
+  if (!accessToken) {
     return mservice.validate(method, jsonData, requestDetails, callback);
   }
   requestDetails.url = requestDetails.url.toLowerCase();
   if (method.toLowerCase() == 'get') {
-    if (requestDetails.headers.access_token
-      && requestDetails.url == requestDetails.headers.access_token.toLowerCase()
-      && requestDetails.headers.scope) {
+    if (requestDetails.url == accessToken.toLowerCase() && requestDetails.headers.scope) {
       return callback(null);
     }
-    if (requestDetails.headers['Access-Token']
-      && requestDetails.url == requestDetails.headers['Access-Token'].toLowerCase()
-      && requestDetails.headers.scope) {
-      return callback(null);
-    }
-  }
-  let accessToken = '';
-
-  if (requestDetails.headers.access_token) {
-    accessToken = requestDetails.headers.access_token;
-  }
-  if (requestDetails.headers['Access-Token']) {
-    accessToken = requestDetails.headers['Access-Token'];
   }
 
   let requestDetailsCopy = {
@@ -147,12 +139,16 @@ function microserviceAuthGET(noneData, requestDetails, callback) {
     if (err) {
       return callback(err, handlerResponse);
     }
-    if (requestDetails.headers.access_token
-      && requestDetails.url == requestDetails.headers.access_token.toLowerCase()) {
-      delete handlerResponse.answer.token;
+    let accessToken = false;
+
+    if(requestDetails.headers.access_token) {
+      accessToken = requestDetails.headers.access_token;
     }
-    if (requestDetails.headers['Access-Token']
-      && requestDetails.url == requestDetails.headers['Access-Token'].toLowerCase()) {
+    if(requestDetails.headers['access-token']) {
+      accessToken = requestDetails.headers['access-token'];
+    }
+
+    if (accessToken && requestDetails.url == accessToken.toLowerCase()) {
       delete handlerResponse.answer.token;
     }
 
