@@ -5,6 +5,6 @@ require('dotenv').config();
 if (process.env.PIDFILE) {
   try{
     var pid = fs.readFileSync(process.env.PIDFILE);
-    process.kill(pid, 'SIGHUP');
+    process.kill(pid, 'SIGINT');
   }catch(e) {}
 }
