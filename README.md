@@ -63,3 +63,4 @@ client.post({
 ### Changle log
 
 - 1.3.5 - fix 'access-token' validation
+- 1.3.6 - add scope output on token GET

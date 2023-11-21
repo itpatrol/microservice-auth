@@ -165,6 +165,7 @@ function microserviceAuthGET(noneData, requestDetails, callback) {
     answer.ttl = item.ttl;
     answer.expireAt = item.expireAt;
     answer.credentials = item.credentials;
+    answer.scope = item.scope;
     answer.methods = {}
 
     for (var i in item.scope) {
